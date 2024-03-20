@@ -4,7 +4,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- *
+ * This class stores books and performs basic library functions.
  */
 public class Library {
     //fields
@@ -20,15 +20,24 @@ public class Library {
     }
 
     // methods
-    public void viewCollection() {
+
+    /**
+     * Prints the title of each book in the library
+     */
+    public void viewCollection(PrintWriter out) {
         int i = 0;
 
         while(books[i] != null) {
-            System.out.print(books[i].getTitle() + " ");
+            out.print(books[i].getTitle() + " ");
             i++;
         }
     }
 
+    /**
+     * Searches books[] for a given book.
+     * @param b book to be searched for
+     * @return true if book[] contains b otherwise false
+     */
     public boolean hasBook(Book b){
         for (Book book : books) {
             if (book == b) {
@@ -41,7 +50,7 @@ public class Library {
 
     /**
      * Adds a book to the first empty space in books[]
-     * if the array isn't at capacity
+     * if the array isn't at capacity.
      * @param b a book that is added to books[]
      */
     public void add(Book b) {
@@ -66,16 +75,15 @@ public class Library {
 
     /**
      * Fetches a book from the library with the given ID
-     * or displays an error message
+     * or displays an error message.
      * @param bookID the ID that is searched for
      * @return a book with a matching ID
      */
     public Book get(int bookID) {
         getBookLock.lock();
         try {
-            for (int i = 0; i < books.length; i++) {
-                System.out.println(books[i].getTitle());
-                if(books[1] != null) {
+            for (int i = 0; i < size; i++) {
+                if(books[i] != null) {
                     if (books[i].getID() == bookID) {
                         return books[i];
                     }
@@ -90,7 +98,7 @@ public class Library {
 
     /**
      * Removes a book from the library
-     * or throws an error
+     * or throws an error.
      * @param b the book that is removed
      * @return the removed book
      */

@@ -8,10 +8,18 @@ public class Book {
         this.bookTitle = title;
     }
 
+    /**
+     * Retrieves the book ID.
+     * @return the ID of the book
+     */
     public int getID() {
         return this.bookID;
     }
 
+    /**
+     * Retrieves the title.
+     * @return the title of the book
+     */
     public String getTitle() {
         return this.bookTitle;
     }

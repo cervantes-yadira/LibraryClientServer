@@ -6,15 +6,14 @@ import java.net.Socket;
 import java.util.Scanner;
 
 /**
- This program tests the bank server.
+ * This program uses the library server to perform commands
  */
 public class LibraryClient {
     public static void main(String[] args) throws IOException {
         final int SBAP_PORT = 8888;
 
         // localhost means we're connecting to our own device (loopback)
-        // localhost = 127.0.0.1
-        try (Socket s = new Socket("localhost", SBAP_PORT)){
+        try (Socket s = new Socket("localhost", SBAP_PORT)) {
 
             // for user input and server output
             InputStream instream = s.getInputStream();
@@ -22,22 +21,35 @@ public class LibraryClient {
             Scanner in = new Scanner(instream);
             PrintWriter out = new PrintWriter(outstream);
 
-            // server responds to output
+            // used by library service class
             String command = "GET 0 1";
             System.out.println("Executing: " + command);
             out.print(command + "\n");
             out.flush();
-            if(in.hasNext()) {
-                String response = in.next();
-                System.out.println("Checking out: " + response);
+
+            // server responds to output
+            if(in.hasNextLine()) {
+                String response = in.nextLine();
+                System.out.println("Checking out: " + response); // Frankenstein
+            }
+
+            command = "GET 5 1";
+            System.out.println("Executing: " + command);
+            out.print(command + "\n");
+            out.flush();
+
+            if(in.hasNextLine()) {
+                String response = in.nextLine();
+                System.out.println("Checking out: " + response); // Little Women
             }
 
             command = "SHOW 1";
             System.out.println("Executing: " + command);
             out.print(command + "\n");
             out.flush();
-            if(in.hasNext()) {
-                String response = in.next();
+
+            if(in.hasNextLine()) {
+                String response = in.nextLine();
                 System.out.println("Displaying: " + response);
             }
 
@@ -45,9 +57,20 @@ public class LibraryClient {
             System.out.println("Executing: " + command);
             out.print(command + "\n");
             out.flush();
-            if(in.hasNext()) {
-                String response = in.next();
-                System.out.println("Returning: " + response);
+
+            if(in.hasNextLine()) {
+                String response = in.nextLine();
+                System.out.println("Returning: " + response); // Frankenstein
+            }
+
+            command = "DO SOMETHING";
+            System.out.println("Executing: " + command);
+            out.print(command + "\n");
+            out.flush();
+
+            if(in.hasNextLine()) {
+                String response = in.nextLine();
+                System.out.println("Result: " + response); // invalid command
             }
 
             command = "QUIT";

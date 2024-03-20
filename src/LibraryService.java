@@ -4,8 +4,8 @@ import java.net.Socket;
 import java.util.Scanner;
 
 /**
- Executes Simple Library System Protocol commands
- from a socket.
+ *  Executes Simple Library System Protocol commands
+ *  from a socket.
  */
 public class LibraryService implements Runnable {
     private Socket s;
@@ -14,11 +14,12 @@ public class LibraryService implements Runnable {
     private Library lib;
     private PrivateLibrary[] libraries;
 
+
     /**
-     Constructs a service object that processes commands
-     from a socket for a bank.
-     @param aSocket the socket
-     @param lib the library
+     * Creates a library service object
+     * @param aSocket initialized with client socket
+     * @param lib initialized with a library object
+     * @param libraries initialized with an array of private libraries
      */
     public LibraryService(Socket aSocket, Library lib, PrivateLibrary[] libraries) {
         s = aSocket;
@@ -26,6 +27,11 @@ public class LibraryService implements Runnable {
         this.libraries = libraries;
     }
 
+    /**
+     * Called by the start() method.
+     * Initializes the in and out fields.
+     * Closes the program when done.
+     */
     public void run() {
         try {
             try {
@@ -43,8 +49,9 @@ public class LibraryService implements Runnable {
     }
 
     /**
-     Executes all commands until the QUIT command or the
-     end of input.
+     * Executes all commands until the QUIT command or the
+     * end of input.
+     * @throws IOException thrown when next() returns null
      */
     public void doService() throws IOException {
         while (true) {
@@ -63,8 +70,8 @@ public class LibraryService implements Runnable {
     }
 
     /**
-     Executes a single command.
-     @param command the command to execute
+     * Executes a single command.
+     * @param command the command to execute
      */
     public void executeCommand(String command) {
         String value = "";
@@ -73,6 +80,7 @@ public class LibraryService implements Runnable {
             int bookID = -1;
             int libraryID = 1;
 
+            // prevents an IO error
             if(in.hasNextInt()) {
                 bookID = in.nextInt();
             }
@@ -111,7 +119,7 @@ public class LibraryService implements Runnable {
 
             if(libraryID != -1) {
                 PrivateLibrary library = libraries[libraryID];
-                library.viewCollection();
+                library.viewCollection(out);
             }
         } else {
             out.println("Invalid command");
